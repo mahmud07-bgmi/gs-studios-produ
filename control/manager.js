@@ -31,7 +31,7 @@ const overlayControlSchemas = {
     },
     sections: [
       ['header', 'HEADER', ['--detail-color-1', '--purple']], ['rows', 'TABLE ROWS', ['--detail-color-2', '--detail-color-3', '--detail-color-4', '--detail-color-5', '--detail-color-6', '--detail-color-17', '--detail-color-18', '--detail-color-19', '--detail-color-20', '--detail-color-21', '--detail-color-22']], ['alive', 'ALIVE / HOVER', ['--detail-color-7', '--detail-color-8', '--detail-color-9', '--detail-color-10', '--detail-color-11']], ['bluezone', 'BLUE ZONE', ['--detail-color-14', '--detail-color-15', '--detail-color-16', '--detail-color-23']], ['eliminated', 'ELIMINATED', ['--detail-color-24', '--detail-color-25', '--detail-color-26', '--detail-color-27']], ['footer', 'FOOTER / LEGEND', ['--detail-color-12', '--detail-color-13']], ['global', 'GLOBAL', ['--black', '--black-2', '--purple-2', '--purple-3', '--white', '--cyan-white', '--line']]
-    ], open: ['alive', 'eliminated']
+    ], open: ['alive', 'eliminated', 'individual']
   },
   FirstPick: {
     labels: { '--detail-color-1': 'MAIN PANEL BACKGROUND', '--detail-color-2': 'TEAM NAME TEXT', '--detail-color-3': 'BOTTOM STRIP – LEFT', '--detail-color-4': 'BOTTOM STRIP – RIGHT' },
@@ -42,8 +42,8 @@ const overlayControlSchemas = {
     sections: [['timer', 'TIMER BAR', ['--detail-color-1', '--detail-color-2', '--detail-color-3']], ['panel', 'PANEL BACKGROUND', ['--bg-dark', '--bg-light']], ['accent', 'ACCENTS & TEXT', ['--red-main', '--red-bright', '--white']]], open: ['timer']
   },
   TeamPreview: {
-    labels: { '--detail-color-1': 'SPECIAL HIGHLIGHT TEXT', '--bg-dark': 'CARD GRADIENT – DARK', '--bg-light': 'CARD GRADIENT – LIGHT', '--bg-mid': 'CARD GRADIENT – CENTER', '--red-main': 'TOP / UNDERLINE ACCENT', '--red-bright': 'UNDERLINE BRIGHT COLOR', '--red-deep': 'DEEP ACCENT', '--white': 'TITLE & TEAM NAME TEXT', '--text-soft': 'PLAYER NAME / SOFT TEXT', '--panel-border': 'CARD BORDER' },
-    sections: [['background', 'CARD BACKGROUND', ['--bg-light', '--bg-mid', '--bg-dark', '--panel-border']], ['text', 'TEXT', ['--white', '--text-soft', '--detail-color-1']], ['accent', 'ACCENTS', ['--red-main', '--red-bright', '--red-deep']]], open: ['background']
+    labels: { '--detail-color-1': 'SPECIAL HIGHLIGHT TEXT', '--bg-dark': 'CARD GRADIENT – DARK', '--bg-light': 'CARD GRADIENT – LIGHT', '--bg-mid': 'CARD GRADIENT – CENTER', '--red-main': 'TOP / UNDERLINE ACCENT', '--red-bright': 'UNDERLINE BRIGHT COLOR', '--red-deep': 'DEEP ACCENT', '--white': 'LEGACY GENERAL TEXT', '--text-soft': 'LEGACY SOFT TEXT', '--panel-border': 'CARD BORDER', '--it-title': 'MAIN TITLE TEXT', '--it-team': 'TEAM NAME TEXT', '--it-player': 'PLAYER NAME TEXT', '--it-error': 'ERROR / NO DATA TEXT' },
+    sections: [['background', 'CARD BACKGROUND', ['--bg-light', '--bg-mid', '--bg-dark', '--panel-border']], ['text', 'TEXT', ['--it-title', '--it-team', '--it-player', '--it-error', '--detail-color-1']], ['accent', 'ACCENTS', ['--red-main', '--red-bright', '--red-deep']], ['legacy', 'LEGACY COLORS', ['--white', '--text-soft']]], open: ['background', 'text']
   },
   TopAliveStatus: {
     labels: { '--detail-color-1': 'CARD GRADIENT – LEFT', '--detail-color-2': 'CARD GRADIENT – RIGHT', '--detail-color-3': 'LOGO PANEL / MAIN TEXT', '--detail-color-4': 'STAT NUMBER TEXT' },
@@ -166,7 +166,8 @@ function aliveThemeState(t) {
 }
 
 function labelFor(v) {
-  return currentSchema().labels[v] || v.replace(/^--/, '').replaceAll('-', ' ').toUpperCase();
+  const configured = defaults.find(item => item.var === v);
+  return currentSchema().labels[v] || configured?.label || v.replace(/^--/, '').replaceAll('-', ' ').toUpperCase();
 }
 function snapshot() { return JSON.parse(JSON.stringify(state)); }
 function pushHistory() { history.push(snapshot()); if (history.length > 60) history.shift(); updateUndo(); }
