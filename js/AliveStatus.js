@@ -257,7 +257,7 @@ function renderTable(table, shouldShow) {
     }
 
    html += `<tr data-team-key="${teamKey}" class="${isBluezone && aliveCount > 0 ? 'bluezone-blink' : ''}${moveClass}">`;
-    html += `<td>${newRank}</td>`;html += `<td class="team"><img src="${row[teamLogoIdx] || ''}" alt="logo"><span>${String(row[teamInitialIdx] || row[teamNameIdx] || '').slice(0,8)}</span></td>`;
+    html += `<td>${newRank}</td>`;html += `<td class="team" style="color:var(--it-team, var(--white));"><img src="${row[teamLogoIdx] || ''}" alt="logo"><span>${String(row[teamInitialIdx] || row[teamNameIdx] || '').slice(0,8)}</span></td>`;
     
     html += `<td>${createAliveRectangles(parseInt(row[playersAliveIdx], 10) || 0)}</td>`;
     html += `<td>${parseInt(row[finishPointsIdx], 10) || 0}</td>`;
